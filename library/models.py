@@ -70,7 +70,7 @@ class Book(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.rfid
+        return self.book_details.first().value if self.book_details.exists() else f"Book {self.id}"
 
 class BookDetail(models.Model):
     book = models.ForeignKey(
@@ -193,7 +193,7 @@ class TransactionItem(models.Model):
     copy_number = models.CharField(max_length=20, blank=True, null=True)
     
     def __str__(self):
-        return f"{self.book.rfid} in {self.transaction.transaction_id}"
+        return self.book.__str__()
     
     class Meta:
         unique_together = ['transaction', 'book']
