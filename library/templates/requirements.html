@@ -1,0 +1,79 @@
+
+{% extends "base.html" %} {% block content %}
+<form id="ched-library-checklist" class="container mt-4">
+  <h3 class="mb-3 text-primary">CHED Memorandum Order Library Requirements Checklist</h3>
+
+  <!-- 1. Staffing -->
+  <h5 class="mt-4">1. Staffing / Librarians</h5>
+  <div>
+    <label><input type="checkbox"> At least one (1) full-time licensed librarian (Head Librarian)</label><br>
+    <label><input type="checkbox"> Head Librarian holds a Master’s in Library & Information Science (MLIS)</label><br>
+    <label><input type="checkbox"> Additional licensed librarians assigned according to user population size</label><br>
+    <label><input type="checkbox"> At least one (1) library support staff per 1,000 users (students + faculty + staff)</label><br>
+    <label><input type="checkbox"> Librarian is registered with the Professional Regulation Commission (PRC)</label><br>
+  </div>
+
+  <!-- 2. Collections -->
+  <h5 class="mt-4">2. Library Holdings / Collections</h5>
+  <div>
+    <label><input type="checkbox"> Minimum of 3,000 titles for newly established HEIs</label><br>
+    <label><input type="checkbox"> Minimum of 5,000 titles after recognition</label><br>
+    <label><input type="checkbox"> At least 5 relevant and recent (≤5 years old) book titles per undergraduate subject</label><br>
+    <label><input type="checkbox"> Additional specialized titles for graduate programs</label><br>
+    <label><input type="checkbox"> Subscriptions to current local and foreign journals/professional publications</label><br>
+    <label><input type="checkbox"> Includes both print and electronic resources</label><br>
+    <label><input type="checkbox"> Access to e-books, online databases, or institutional repositories</label><br>
+    <label><input type="checkbox"> Has audiovisual/non-print materials (e.g., CDs, DVDs, digital media)</label><br>
+    <label><input type="checkbox"> Updated collection development and weeding policy</label><br>
+  </div>
+
+  <!-- 3. Physical Facilities -->
+  <h5 class="mt-4">3. Physical Facilities & Equipment</h5>
+  <div>
+    <label><input type="checkbox"> Library has adequate floor space for collections and reading areas</label><br>
+    <label><input type="checkbox"> Separate space for reading, reference, staff, and storage areas</label><br>
+    <label><input type="checkbox"> Sufficient seating (at least 10% of student population)</label><br>
+    <label><input type="checkbox"> Adequate lighting, ventilation, and noise control</label><br>
+    <label><input type="checkbox"> Accessible facilities for persons with disabilities (PWD)</label><br>
+    <label><input type="checkbox"> Functional computers for users with internet access</label><br>
+    <label><input type="checkbox"> Internet connectivity available in library area</label><br>
+    <label><input type="checkbox"> Safety measures (fire extinguisher, exit signs, emergency plan)</label><br>
+  </div>
+
+  <!-- 4. Organization & Services -->
+  <h5 class="mt-4">4. Organization and Services</h5>
+  <div>
+    <label><input type="checkbox"> Library has an approved organizational structure</label><br>
+    <label><input type="checkbox"> Properly catalogued and classified materials (DDC/LCC system)</label><br>
+    <label><input type="checkbox"> OPAC (Online Public Access Catalog) available for users</label><br>
+    <label><input type="checkbox"> Library offers reference and circulation services</label><br>
+    <label><input type="checkbox"> Library provides access to online/electronic services</label><br>
+    <label><input type="checkbox"> Library open hours accommodate student and faculty needs</label><br>
+    <label><input type="checkbox"> Has written library policies and procedures manual</label><br>
+    <label><input type="checkbox"> Conducts regular inventory and evaluation of resources</label><br>
+    <label><input type="checkbox"> Library participates in resource-sharing or consortium networks</label><br>
+  </div>
+
+  <!-- 5. Technology & Automation -->
+  <h5 class="mt-4">5. Technology & Automation</h5>
+  <div>
+    <label><input type="checkbox"> Library management system (LMS/ILS) is used for cataloging and circulation</label><br>
+    <label><input type="checkbox"> Users can search materials online via OPAC or web portal</label><br>
+    <label><input type="checkbox"> Electronic document delivery and remote access supported</label><br>
+    <label><input type="checkbox"> Digital repository for theses, research outputs, and e-documents</label><br>
+  </div>
+
+  <!-- 6. Evaluation & Planning -->
+  <h5 class="mt-4">6. Evaluation, Planning, and Reports</h5>
+  <div>
+    <label><input type="checkbox"> Annual library report submitted to school administration</label><br>
+    <label><input type="checkbox"> Conducts user satisfaction surveys</label><br>
+    <label><input type="checkbox"> Maintains updated statistics on library use and collections</label><br>
+    <label><input type="checkbox"> Library included in institutional strategic planning</label><br>
+  </div>
+
+  <div class="mt-4">
+    <button type="button" class="btn btn-success" onclick="alert('Checklist saved (demo only)')">Save / Print</button>
+  </div>
+</form>
+{% endblock %}

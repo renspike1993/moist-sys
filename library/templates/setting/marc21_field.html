@@ -1,0 +1,87 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="row">
+	<div class="col-md-12 grid-margin stretch-card">
+		<div class="card shadow-sm">
+			<div class="card-body">
+				<form>
+					<h2 class=" mb-3 fw-bold text-center">Resource Description and All Access Fields (RDA)</h2>
+
+					{% for group in grouped_fields %}
+					<div class="mt-5 mb-4">
+						<h5 class="card-title mb-3 fw-bold text-center">MARC TAG ({{ group.category.code_range }})</h5>
+
+						<div class="table-responsive dashboard-dark">
+							<table class="table table-bordered align-middle">
+								<thead class="table-light text-center">
+									<tr>
+										<th style="width: 5%">Field Code</th>
+										<th style="width: 80%">Field Description  </th>
+										<th style="width: 5%">Searchable</th>
+										<th style="width: 5%">Required</th>
+										<th style="width: 5%">Hidden</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for mf in group.fields %}
+									<tr>
+										<td class="text-center">{{ mf.field_code }}</td>
+										<td>{{ mf.field_name }}</td>
+
+										<td class="text-center">
+											<input type="checkbox" class="form-check-input toggle-update" data-id="{{ mf.id }}" data-column="is_searchable" {% if mf.is_searchable %}checked{% endif %} />
+										</td>
+
+										<td class="text-center">
+											<input type="checkbox" class="form-check-input toggle-update" data-id="{{ mf.id }}" data-column="is_required" {% if mf.is_required %}checked{% endif %} />
+										</td>
+										<td class="text-center">
+											<input type="checkbox" class="form-check-input toggle-update" data-id="{{ mf.id }}" data-column="is_hidden" {% if mf.is_hidden %}checked{% endif %} />
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+					{% endfor %}
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- ✅ jQuery AJAX Script -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	$(function () {
+		$(".toggle-update").on("change", function () {
+			const id = $(this).data("id");
+			const column = $(this).data("column");
+			const value = $(this).is(":checked");
+
+			$.ajax({
+				url: "{% url 'update_marc21_field' %}",
+				type: "POST",
+				data: {
+					id: id,
+					column: column,
+					value: value,
+					csrfmiddlewaretoken: "{{ csrf_token }}",
+				},
+				success: function (response) {
+					if (response.success) {
+						console.log(`✅ Updated ${column} for field #${id}`);
+					} else {
+						alert("⚠️ Update failed: " + (response.error || "Unknown error"));
+					}
+				},
+				error: function () {
+					alert("⚠️ Network error. Please try again.");
+				},
+			});
+		});
+	});
+</script>
+
+{% endblock %}

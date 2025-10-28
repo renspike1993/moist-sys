@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-4">
+	<div class="card shadow-sm">
+		<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+			<h4 class="mb-0">Book Details – {{ book.rfid }}</h4>
+			<div>
+				<a href="{% url 'book_list' %}" class="btn btn-secondary ms-2 px-4"> <i class="fas fa-arrow-left me-1"></i> Back to list </a>
+
+				<a href="?edit=true" class="btn btn-warning ms-2">✏️ MARC-21 Fields</a>
+			</div>
+		</div>
+
+		<div class="card-body">
+			<div class="row mb-4">
+				<div class="col-md-3 text-center">
+					{% if book.image %}
+					<img src="{{ book.image.url }}" class="img-thumbnail" style="max-width: 200px" />
+					{% else %}
+					<div class="border p-5 text-muted">No Image</div>
+					{% endif %}
+				</div>
+				<div class="col-md-9">
+					<p><strong>RFID:</strong> {{ book.rfid }}</p>
+					<p><strong>QR Code:</strong> {{ book.qr_code }}</p>
+					<p><strong>Program:</strong> {{ book.program.name }}</p>
+				</div>
+			</div>
+
+			<h5 class="mt-4 mb-3">📖 MARC21 Field Values</h5>
+			{% if book_details %}
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Field Code</th>
+						<th>Label</th>
+						<th>Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for detail in book_details %}
+					<tr>
+						<td>{{ detail.marc21_field.field_code }}</td>
+						<td>{{ detail.marc21_field.label }}</td>
+						<td>{{ detail.value }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% else %}
+			<p class="text-muted">No MARC21 data available for this book.</p>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}

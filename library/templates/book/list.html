@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Book List</h3>
+<a href="{% url 'book_create' %}" class="btn btn-primary mb-3">➕ Add Book</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>RFID</th>
+            <th>QR Code</th>
+            <th>Program</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.rfid }}</td>
+            <td>{{ book.qr_code }}</td>
+            <td>{{ book.program }}</td>
+            <td>
+                {% if book.image %}
+                <img src="{{ book.image.url }}" width="80" class="img-thumbnail">
+                {% else %}
+                <span class="text-muted">No Image</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-info">View</a>
+                <a href="{% url 'book_update' book.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="{% url 'book_delete' book.pk %}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

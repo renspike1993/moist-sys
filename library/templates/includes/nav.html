@@ -1,0 +1,242 @@
+{% load static %}
+<nav class="sidebar">
+	<div class="sidebar-header">
+		<img class="wd-35 ht-35 rounded-circle" src="{% static 'assets/images/moist.png' %}" alt="profile" />
+
+		<a href="#" class="sidebar-brand" style="color: rgb(102, 101, 101)"> MLMS<span></span> </a>
+		<div class="sidebar-toggler not-active">
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+	</div>
+	<div class="sidebar-body">
+		<ul class="nav">
+			<li class="nav-item nav-category">OPAC</li>
+			<li class="nav-item">
+				<a href="" class="nav-link">
+					<i class="link-icon" data-feather="box"></i>
+					<span class="link-title">Dashboard</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a href="{% url 'opac' %}" class="nav-link">
+					<i class="link-icon" data-feather="aperture"></i>
+					<span class="link-title">Search Engine</span>
+				</a>
+			</li>
+
+
+			<li class="nav-item nav-category">Main Option</li>
+			<li class="nav-item">
+				<a href="{% url 'get_departments' %}" class="nav-link">
+					<i class="link-icon" data-feather="users"></i>
+					<span class="link-title">Departments</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a href="{% url 'get_programs' %}" class="nav-link">
+					<i class="link-icon" data-feather="grid"></i>
+					<span class="link-title">Programs</span>
+				</a>
+			</li>
+
+
+			<li class="nav-item nav-category">Manage Library</li>
+			<!-- books -->
+			<li class="nav-item">
+				<a class="nav-link" data-bs-toggle="collapse" href="#inventory" role="button" aria-expanded="false" aria-controls="emails">
+					<i class="link-icon" data-feather="book"></i>
+					<span class="link-title">Books</span>
+					<i class="link-arrow" data-feather="chevron-down"></i>
+				</a>
+				<div class="collapse" id="inventory">
+					<ul class="nav sub-menu">
+						<li class="nav-item">
+							<a href="{% url 'books' %}" class="nav-link">All Books</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="{% url 'book_entry_form' %}" class="nav-link">RDA Form</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'marc21_settings' %}" class="nav-link">RDA Fields (MARC-21)</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="pages/email/read.html" class="nav-link">Collection Section</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="pages/email/compose.html" class="nav-link">Reference  Section</a>
+						</li>
+						<li class="nav-item">
+							<a href="pages/email/compose.html" class="nav-link">Circulation  Section</a>
+						</li>
+						<li class="nav-item">
+							<a href="pages/email/compose.html" class="nav-link">Archive  Section</a>
+						</li>
+
+
+					</ul>
+				</div>
+			</li>
+
+			<!-- Transactions -->
+			<li class="nav-item">
+				<a class="nav-link" data-bs-toggle="collapse" href="#transaction" role="button" aria-expanded="false" aria-controls="transaction">
+					<i class="link-icon" data-feather="book"></i>
+					<span class="link-title">Transactions</span>
+					<i class="link-arrow" data-feather="chevron-down"></i>
+				</a>
+				<div class="collapse" id="transaction">
+					<ul class="nav sub-menu">
+
+						<li class="nav-item">
+							<a href="pages/email/read.html" class="nav-link">Reserved Books</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="pages/email/read.html" class="nav-link">Borrowed Books</a>
+						</li>
+						<li class="nav-item">
+							<a href="pages/email/read.html" class="nav-link">Returned Books</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="pages/email/compose.html" class="nav-link">Damaged Books</a>
+						</li>
+						<li class="nav-item">
+							<a href="pages/email/compose.html" class="nav-link">Missing Books</a>
+						</li>
+
+					</ul>
+				</div>
+			</li>
+
+
+
+			<!-- Departments -->
+			<li class="nav-item nav-category">Moistians</li>
+			<li class="nav-item">
+				<a class="nav-link" data-bs-toggle="collapse" href="#departments" role="button" aria-expanded="false" aria-controls="emails">
+					<i class="link-icon" data-feather="users"></i>
+					<span class="link-title">Moistian Beings</span>
+					<i class="link-arrow" data-feather="chevron-down"></i>
+				</a>
+				<div class="collapse" id="departments">
+					<ul class="nav sub-menu">
+						<li class="nav-item">
+							<a href="pages/email/inbox.html" class="nav-link">Students</a>
+						</li>
+						<li class="nav-item">
+							<a href="pages/email/read.html" class="nav-link">Faculty & Staffs</a>
+						</li>
+					</ul>
+				</div>
+			</li>
+
+			<!-- Security -->
+			<li class="nav-item nav-category">Security Assurance</li>
+			<li class="nav-item">
+				<a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
+					<i class="link-icon" data-feather="lock"></i>
+					<span class="link-title">Privacy Settings</span>
+					<i class="link-arrow" data-feather="chevron-down"></i>
+				</a>
+				<div class="collapse" id="general-pages">
+					<ul class="nav sub-menu">
+						<li class="nav-item">
+							<a href="pages/general/blank-page.html" class="nav-link">Users</a>
+						</li>
+						<li class="nav-item">
+							<a href="pages/general/faq.html" class="nav-link">Groups | Roles</a>
+						</li>
+						<li class="nav-item">
+							<a href="pages/general/invoice.html" class="nav-link">Permissions</a>
+						</li>
+						<li class="nav-item">
+							<a href="pages/general/invoice.html" class="nav-link">Activity Logs</a>
+						</li>
+
+					</ul>
+				</div>
+			</li>
+
+			<li class="nav-item">
+				<a href="https://www.nobleui.com/html/documentation/docs.html" target="_blank" class="nav-link">
+					<i class="link-icon" data-feather="radio"></i>
+					<span class="link-title">IN | OUT</span>
+				</a>
+			</li>
+
+			<!-- Services -->
+			<li class="nav-item nav-category">System Integration</li>
+			<li class="nav-item">
+				<a class="nav-link" data-bs-toggle="collapse" href="#software" role="button" aria-expanded="false" aria-controls="software">
+					<i class="link-icon" data-feather="lock"></i>
+					<span class="link-title">Software</span>
+					<i class="link-arrow" data-feather="chevron-down"></i>
+				</a>
+				<div class="collapse" id="software">
+					<ul class="nav sub-menu">
+						<li class="nav-item">
+							<a href="pages/general/blank-page.html" class="nav-link">Users</a>
+						</li>
+						<li class="nav-item">
+							<a href="pages/general/faq.html" class="nav-link">Groups | Roles</a>
+						</li>
+						<li class="nav-item">
+							<a href="pages/general/invoice.html" class="nav-link">Permissions</a>
+						</li>
+						<li class="nav-item">
+							<a href="pages/general/invoice.html" class="nav-link">Activity Logs</a>
+						</li>
+
+					</ul>
+				</div>
+			</li>
+
+			<li class="nav-item">
+				<a class="nav-link" data-bs-toggle="collapse" href="#hardware" role="button" aria-expanded="false" aria-controls="hardware">
+					<i class="link-icon" data-feather="lock"></i>
+					<span class="link-title">Hardware</span>
+					<i class="link-arrow" data-feather="chevron-down"></i>
+				</a>
+				<div class="collapse" id="hardware">
+					<ul class="nav sub-menu">
+						<li class="nav-item">
+							<a href="pages/general/blank-page.html" class="nav-link">Sensors & Scanners</a>
+						</li>
+
+					</ul>
+				</div>
+			</li>
+
+			<li class="nav-item nav-category">Settings</li>
+
+			<li class="nav-item">
+				<a href="{% url 'marc21_settings' %}" class="nav-link">
+					<i class="link-icon" data-feather="codepen"></i>
+					<span class="link-title">RDA Fields</span>
+				</a>
+			</li>
+
+			<li class="nav-item">
+				<a href="https://www.nobleui.com/html/documentation/docs.html" target="_blank" class="nav-link">
+					<i class="link-icon" data-feather="printer"></i>
+					<span class="link-title">Generate Report</span>
+				</a>
+			</li>
+
+
+			<li class="nav-item">
+				<a href="{% url 'ched-requirements' %}" class="nav-link">
+					<i class="link-icon" data-feather="check"></i>
+					<span class="link-title">Ched CMO Guidelines</span>
+				</a>
+			</li>
+
+		</ul>
+	</div>
+</nav>

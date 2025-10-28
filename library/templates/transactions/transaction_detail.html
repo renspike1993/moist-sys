@@ -1,0 +1,91 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-4">
+	<!-- Header -->
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h2 class="fw-bold mb-0">📄 Transaction Details</h2>
+		<a href="{% url 'transaction_list' %}" class="btn btn-outline-secondary"> <i class="fas fa-arrow-left"></i> Back to List </a>
+	</div>
+
+	<!-- Transaction Info -->
+	<div class="card shadow-sm mb-4">
+		<div class="card-body">
+			<h5 class="card-title fw-bold text-primary">Transaction ID: {{ transaction.transaction_id }}</h5>
+			<hr />
+			<div class="row g-3">
+				<div class="col-md-6">
+					<p><strong>User:</strong> {{ transaction.user_name }} ({{ transaction.user_id }})</p>
+					<p><strong>Email:</strong> {{ transaction.user_email|default:"—" }}</p>
+					<p>
+						<strong>Status:</strong>
+						<span class="badge {% if transaction.status == 'returned' %}bg-success {% elif transaction.status == 'checked_out' %}bg-primary {% elif transaction.status == 'reserved' %}bg-warning text-dark {% elif transaction.status == 'overdue' %}bg-danger {% else %}bg-secondary{% endif %}"> {{ transaction.status|title }} </span>
+					</p>
+				</div>
+				<div class="col-md-6">
+					<p><strong>Reservation Date:</strong> {{ transaction.reservation_date|date:"Y-m-d H:i" }}</p>
+					{% if transaction.checkout_date %}
+					<p><strong>Checkout Date:</strong> {{ transaction.checkout_date|date:"Y-m-d H:i" }}</p>
+					{% endif %} {% if transaction.due_date %}
+					<p><strong>Due Date:</strong> {{ transaction.due_date|date:"Y-m-d" }}</p>
+					{% endif %} {% if transaction.return_date %}
+					<p><strong>Returned:</strong> {{ transaction.return_date|date:"Y-m-d H:i" }}</p>
+					{% endif %}
+				</div>
+			</div>
+			<hr />
+			<p><strong>Notes:</strong> {{ transaction.notes|default:"—" }}</p>
+		</div>
+	</div>
+
+	<!-- Books Table -->
+	<div class="card shadow-sm">
+		<div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+			<h5 class="mb-0">📚 Books in this Transaction ({{ transaction.transactionitem_set.count }})</h5>
+		</div>
+		<div class="card-body p-0">
+			<table class="table table-hover align-middle mb-0">
+				<thead class="table-light">
+					<tr>
+						<th>RFID</th>
+						<th>Title</th>
+						<th>Status</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in transaction.transactionitem_set.all %}
+					<tr>
+						<td><code>{{ item.book.rfid }}</code></td>
+						<td>{{ item.book.title }}</td>
+						<td>
+							<span class="badge {% if item.status == 'checked_out' %}bg-danger {% elif item.status == 'returned' %}bg-success {% elif item.status == 'reserved' %}bg-warning text-dark {% else %}bg-secondary{% endif %}"> {{ item.status|title }} </span>
+						</td>
+						<td>
+							{% if item.status == "reserved" %}
+							<a href="{% url 'transaction_item_checkout' item.pk %}" class="btn btn-sm btn-danger"> <i class="fas fa-check"></i> Check Out </a>
+							{% elif item.status == "checked_out" %}
+							<a href="{% url 'transaction_item_return' item.pk %}" class="btn btn-sm btn-success"> <i class="fas fa-undo"></i> Return </a>
+              {% else %}
+              <button class="btn btn-secondary">None</button>
+              {% endif %}
+						</td>
+					</tr>
+					{% empty %}
+					<tr>
+						<td colspan="4" class="text-center text-muted py-3">No books linked to this transaction.</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<!-- Action Buttons -->
+	<!-- <div class="mt-4 d-flex gap-2">
+		{% if transaction.status == 'reserved' %}
+		<a href="{% url 'transaction_checkout' transaction.pk %}" class="btn btn-primary"> <i class="fas fa-check-circle"></i> Mark as Checked Out </a>
+		{% elif transaction.status == 'checked_out' %}
+		<a href="{% url 'transaction_return' transaction.pk %}" class="btn btn-success"> <i class="fas fa-undo"></i> Mark as Returned </a>
+		{% endif %}
+	</div> -->
+</div>
+{% endblock %}
