@@ -1,12 +1,13 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<title>NobleUI Responsive Bootstrap 4 Dashboard Template</title>
+		<title>MOIST-MLMS</title>
 		<!-- core:css -->
-		{% load static %}
 
 		<!-- core:css -->
 		<link rel="stylesheet" href="{% static 'assets/vendors/core/core.css' %}" />
@@ -26,6 +27,17 @@
 		<!-- End layout styles -->
 
 		<link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" />
+		<style>
+			:root {
+				--primaryA: #2c3e50;
+				--secondaryA: #3498db;
+				/* --accent: #e74c3c; */
+				/* --light: #ecf0f1; */
+				--darkA: #2c3e50;
+				/* --success: #2ecc71; */
+				--shadowA: 0 4px 6px rgba(0, 0, 0, 0.1);
+			}
+		</style>
 	</head>
 	<body class="sidebar-dark">
 		<div class="main-wrapper">
@@ -78,14 +90,21 @@
 								<li class="nav-item">
 									<a href="{% url 'get_programs' %}" class="nav-link">
 										<i class="link-icon" data-feather="grid"></i>
-										<span class="link-title">Programs & Collections</span>
+										<span class="link-title">Programs</span>
 									</a>
 								</li>
+								<li class="nav-item">
+									<a href="{% url 'get_programs' %}" class="nav-link">
+										<i class="link-icon" data-feather="grid"></i>
+										<span class="link-title">Section & Collection</span>
+									</a>
+								</li>
+
 
 								<li class="nav-item nav-category">Manage Library</li>
 								<!-- books -->
 								<li class="nav-item">
-									<a class="nav-link" data-bs-toggle="collapse" href="#inventory" role="button" aria-expanded="false" aria-controls="emails">
+									<a class="nav-link" data-bs-toggle="collapse" href="#inventory" role="button" aria-expanded="false" aria-controls="inventory">
 										<i class="link-icon" data-feather="book"></i>
 										<span class="link-title">Books</span>
 										<i class="link-arrow" data-feather="chevron-down"></i>
@@ -102,7 +121,7 @@
 											<li class="nav-item">
 												<a href="{% url 'marc21_settings' %}" class="nav-link">RDA Fields (MARC-21)</a>
 											</li>
-<!-- 
+											<!-- 
 											<li class="nav-item">
 												<a href="pages/email/read.html" class="nav-link">Collection Section</a>
 											</li>
@@ -122,7 +141,6 @@
 
 								<!-- Transactions -->
 
-
 								<li class="nav-item">
 									<a href="{% url 'transaction_list' %}" class="nav-link">
 										<i class="link-icon" data-feather="book"></i>
@@ -130,13 +148,12 @@
 									</a>
 								</li>
 
-
 								<!-- Departments -->
 								<li class="nav-item nav-category">Moistians</li>
 								<li class="nav-item">
 									<a class="nav-link" data-bs-toggle="collapse" href="#departments" role="button" aria-expanded="false" aria-controls="emails">
 										<i class="link-icon" data-feather="users"></i>
-										<span class="link-title">Moistian Beings</span>
+										<span class="link-title">Moistian</span>
 										<i class="link-arrow" data-feather="chevron-down"></i>
 									</a>
 									<div class="collapse" id="departments">
@@ -274,12 +291,12 @@
 					</div>
 					<div class="theme-wrapper">
 						<h6 class="text-muted mb-2">Light Theme:</h6>
-						<a class="theme-item active" href="../demo_1/dashboard-one.html">
-							<img src="../assets/images/screenshots/light.jpg" alt="light theme" />
+						<a class="theme-item active" href="">
+							<img src="" alt="light theme" />
 						</a>
 						<h6 class="text-muted mb-2">Dark Theme:</h6>
-						<a class="theme-item" href="../demo_2/dashboard-one.html">
-							<img src="../assets/images/screenshots/dark.jpg" alt="light theme" />
+						<a class="theme-item" href="">
+							<img src="" alt="light theme" />
 						</a>
 					</div>
 				</div>
@@ -305,9 +322,7 @@
 						</form>
 						<ul class="navbar-nav">
 							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<i class="flag-icon flag-icon-us mt-1" title="us"></i> <span class="font-weight-medium ml-1 mr-1">English</span>
-								</a>
+								<a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="flag-icon flag-icon-us mt-1" title="us"></i> <span class="font-weight-medium ml-1 mr-1">English</span> </a>
 								<div class="dropdown-menu" aria-labelledby="languageDropdown">
 									<a href="javascript:;" class="dropdown-item py-2"><i class="flag-icon flag-icon-us" title="us" id="us"></i> <span class="ml-1"> English </span></a>
 									<a href="javascript:;" class="dropdown-item py-2"><i class="flag-icon flag-icon-fr" title="fr" id="fr"></i> <span class="ml-1"> French </span></a>
@@ -362,7 +377,7 @@
 									<div class="dropdown-body">
 										<a href="javascript:;" class="dropdown-item">
 											<div class="figure">
-												<img src="https://via.placeholder.com/30x30" alt="userr" />
+												<img src="" alt="userr" />
 											</div>
 											<div class="content">
 												<div class="d-flex justify-content-between align-items-center">
@@ -374,7 +389,7 @@
 										</a>
 										<a href="javascript:;" class="dropdown-item">
 											<div class="figure">
-												<img src="https://via.placeholder.com/30x30" alt="userr" />
+												<img src="" alt="userr" />
 											</div>
 											<div class="content">
 												<div class="d-flex justify-content-between align-items-center">
@@ -386,7 +401,7 @@
 										</a>
 										<a href="javascript:;" class="dropdown-item">
 											<div class="figure">
-												<img src="https://via.placeholder.com/30x30" alt="userr" />
+												<img src="" alt="userr" />
 											</div>
 											<div class="content">
 												<div class="d-flex justify-content-between align-items-center">
@@ -398,7 +413,7 @@
 										</a>
 										<a href="javascript:;" class="dropdown-item">
 											<div class="figure">
-												<img src="https://via.placeholder.com/30x30" alt="userr" />
+												<img src="" alt="userr" />
 											</div>
 											<div class="content">
 												<div class="d-flex justify-content-between align-items-center">
@@ -410,7 +425,7 @@
 										</a>
 										<a href="javascript:;" class="dropdown-item">
 											<div class="figure">
-												<img src="https://via.placeholder.com/30x30" alt="userr" />
+												<img src="" alt="userr" />
 											</div>
 											<div class="content">
 												<div class="d-flex justify-content-between align-items-center">
@@ -492,12 +507,12 @@
 							</li>
 							<li class="nav-item dropdown nav-profile">
 								<a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<img src="https://via.placeholder.com/30x30" alt="userr" />
+									<img src="" alt="userr" />
 								</a>
 								<div class="dropdown-menu" aria-labelledby="profileDropdown">
 									<div class="dropdown-header d-flex flex-column align-items-center">
 										<div class="figure mb-3">
-											<img src="https://via.placeholder.com/80x80" alt="" />
+											<img src="" alt="" />
 										</div>
 										<div class="info text-center">
 											<p class="name font-weight-bold mb-0">Amiah Burton</p>

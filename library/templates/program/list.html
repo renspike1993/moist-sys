@@ -1,64 +1,199 @@
 {% extends "base.html" %} {% block content %}
-<div class="container mt-4">
-	<div class="card">
-		<div class="card-header bg-primary text-white">
-			<h5 class="mb-0">General Collections & Sections</h5>
-		</div>
-		<div class="card-body">
-			<table class="table table-hover table-bordered align-middle">
-				<thead class="table-light">
-					<tr>
-						<th>ID</th>
-						<th>Section/Collection Name</th>
-						<th>Available Books</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>1</td>
-						<td>Circulation Collection</td>
-						<td>123</td>
-						<td>
-							<button class="btn btn-primary">View Books</button>
-						</td>
-					</tr>
+<style>
+	.department-card {
+		transition: all 0.3s ease;
+		border: none;
+		border-radius: 12px;
+		overflow: hidden;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+		margin-bottom: 20px;
+	}
 
-					<tr>
-						<td>1</td>
-						<td>Felepiniana Collection</td>
-						<td>123</td>
-						<td>
-							<button class="btn btn-primary">View Books</button>
-						</td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td>Reference Section</td>
-						<td>112</td>
-						<td>
-							<button class="btn btn-primary">View Books</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+	.department-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+	}
+
+	.department-header {
+		background: linear-gradient(135deg, #3498db, #2c3e50);
+		color: white;
+		padding: 20px;
+		position: relative;
+	}
+
+	.department-id {
+		position: absolute;
+		top: 15px;
+		right: 15px;
+		background: rgba(255, 255, 255, 0.2);
+		border-radius: 20px;
+		padding: 5px 12px;
+		font-size: 0.85rem;
+		font-weight: 600;
+	}
+
+	.department-body {
+		padding: 25px 20px;
+	}
+
+	.department-name {
+		font-size: 1.4rem;
+		font-weight: 700;
+		color: #2c3e50;
+		margin-bottom: 15px;
+	}
+
+	.department-stats {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 20px;
+		padding-bottom: 15px;
+		border-bottom: 1px solid #eee;
+	}
+
+	.stat-item {
+		text-align: center;
+		flex: 1;
+	}
+
+	.stat-value {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #3498db;
+	}
+
+	.stat-label {
+		font-size: 0.85rem;
+		color: #7f8c8d;
+		margin-top: 5px;
+	}
+
+	.department-actions {
+		display: flex;
+		gap: 10px;
+	}
+
+	.btn-view {
+		background: linear-gradient(135deg, #3498db, #2980b9);
+		border: none;
+		border-radius: 8px;
+		padding: 10px 20px;
+		color: white;
+		font-weight: 600;
+		transition: all 0.3s ease;
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+	}
+
+	.btn-view:hover {
+		background: linear-gradient(135deg, #2980b9, #3498db);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+		color: white;
+	}
+
+	.btn-edit {
+		background: #f8f9fa;
+		border: 1px solid #dee2e6;
+		border-radius: 8px;
+		padding: 10px 15px;
+		color: #6c757d;
+		transition: all 0.3s ease;
+	}
+
+	.btn-edit:hover {
+		background: #e9ecef;
+		color: #495057;
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: 60px 20px;
+		color: #7f8c8d;
+	}
+
+	.empty-state i {
+		font-size: 4rem;
+		margin-bottom: 20px;
+		color: #bdc3c7;
+	}
+
+	.empty-state h4 {
+		margin-bottom: 10px;
+		color: #95a5a6;
+	}
+
+	.view-toggle {
+		display: flex;
+		justify-content: flex-end;
+		margin-bottom: 20px;
+		gap: 10px;
+	}
+
+	.toggle-btn {
+		background: white;
+		border: 1px solid #dee2e6;
+		border-radius: 8px;
+		padding: 8px 15px;
+		color: #6c757d;
+		transition: all 0.3s ease;
+	}
+
+	.toggle-btn.active {
+		background: #3498db;
+		color: white;
+		border-color: #3498db;
+	}
+
+	.department-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+		gap: 25px;
+	}
+
+	.table-view .department-card {
+		display: none;
+	}
+
+	.card-view .table {
+		display: none;
+	}
+
+	@media (max-width: 768px) {
+		.department-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.view-toggle {
+			justify-content: center;
+		}
+	}
+</style>
+
+<div class="container mt-4">
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<div>
+			<h2 class="mb-1">Program Management</h2>
+			<p class="text-muted">Manage and view all programs in the institution</p>
+		</div>
+		<div class="">
+			<button class="btn-view" id="tableViewBtn"><i class="fas fa-table me-1"></i>✏️ Add Program</button>
 		</div>
 	</div>
-</div>
 
-<div class="container mt-4">
-	<div class="card">
-		<div class="card-header bg-primary text-white">
-			<h5 class="mb-0">College Programs</h5>
-		</div>
-		<div class="card-body">
-			<table class="table table-hover table-bordered align-middle">
+	<!-- Books Table -->
+	<div class="card shadow-sm">
+		<div class="card-body p-0">
+			<table class="table table-view table-hover mb-0 align-middle">
 				<thead class="table-light">
 					<tr>
 						<th>ID</th>
 						<th>Program Name</th>
 						<th>Department</th>
-						<th>Abbreviation</th>
+						<th>Subjects</th>
 						<th>Available Books</th>
 						<th>Action</th>
 					</tr>
@@ -69,11 +204,11 @@
 						<td>{{ program.id }}</td>
 						<td>{{ program.name }}</td>
 						<td>{{ program.department.name }}</td>
-						<td>{{ program.abbrv }}</td>
-						<td class="text-center">{{ program.id }}/100</td>
+						<td>0</td>
+						<td class="text-center">100</td>
 						<td>
-							<button class="btn btn-primary">View Books</button>
-							<button class="btn btn-warning">View Curriculum</button>
+							<button class="btn btn-primary">Books</button>
+							<button class="btn btn-warning">Curriculum</button>
 						</td>
 					</tr>
 					{% empty %}
@@ -87,4 +222,45 @@
 	</div>
 </div>
 
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const cardViewBtn = document.getElementById("cardViewBtn");
+		const tableViewBtn = document.getElementById("tableViewBtn");
+		const cardView = document.querySelector(".card-view");
+		const tableView = document.querySelector(".table-view");
+
+		// Set initial view
+		cardViewBtn.classList.add("active");
+		tableView.style.display = "none";
+
+		cardViewBtn.addEventListener("click", function () {
+			cardViewBtn.classList.add("active");
+			tableViewBtn.classList.remove("active");
+			cardView.style.display = "block";
+			tableView.style.display = "none";
+		});
+
+		tableViewBtn.addEventListener("click", function () {
+			tableViewBtn.classList.add("active");
+			cardViewBtn.classList.remove("active");
+			tableView.style.display = "block";
+			cardView.style.display = "none";
+		});
+
+		// Add hover effects to table rows
+		const tableRows = document.querySelectorAll(".table tbody tr");
+		tableRows.forEach((row) => {
+			row.addEventListener("mouseenter", function () {
+				this.style.backgroundColor = "#f8f9fa";
+				this.style.transform = "scale(1.01)";
+				this.style.transition = "all 0.2s ease";
+			});
+
+			row.addEventListener("mouseleave", function () {
+				this.style.backgroundColor = "";
+				this.style.transform = "scale(1)";
+			});
+		});
+	});
+</script>
 {% endblock %}

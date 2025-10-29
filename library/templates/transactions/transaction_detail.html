@@ -1,45 +1,82 @@
 {% extends "base.html" %} {% block content %}
-<div class="container mt-4">
-	<!-- Header -->
-	<div class="d-flex justify-content-between align-items-center mb-4">
-		<h2 class="fw-bold mb-0">📄 Transaction Details</h2>
-		<a href="{% url 'transaction_list' %}" class="btn btn-outline-secondary"> <i class="fas fa-arrow-left"></i> Back to List </a>
-	</div>
 
-	<!-- Transaction Info -->
-	<div class="card shadow-sm mb-4">
-		<div class="card-body">
-			<h5 class="card-title fw-bold text-primary">Transaction ID: {{ transaction.transaction_id }}</h5>
-			<hr />
-			<div class="row g-3">
-				<div class="col-md-6">
-					<p><strong>User:</strong> {{ transaction.user_name }} ({{ transaction.user_id }})</p>
-					<p><strong>Email:</strong> {{ transaction.user_email|default:"—" }}</p>
-					<p>
-						<strong>Status:</strong>
-						<span class="badge {% if transaction.status == 'returned' %}bg-success {% elif transaction.status == 'checked_out' %}bg-primary {% elif transaction.status == 'reserved' %}bg-warning text-dark {% elif transaction.status == 'overdue' %}bg-danger {% else %}bg-secondary{% endif %}"> {{ transaction.status|title }} </span>
-					</p>
-				</div>
-				<div class="col-md-6">
-					<p><strong>Reservation Date:</strong> {{ transaction.reservation_date|date:"Y-m-d H:i" }}</p>
-					{% if transaction.checkout_date %}
-					<p><strong>Checkout Date:</strong> {{ transaction.checkout_date|date:"Y-m-d H:i" }}</p>
-					{% endif %} {% if transaction.due_date %}
-					<p><strong>Due Date:</strong> {{ transaction.due_date|date:"Y-m-d" }}</p>
-					{% endif %} {% if transaction.return_date %}
-					<p><strong>Returned:</strong> {{ transaction.return_date|date:"Y-m-d H:i" }}</p>
-					{% endif %}
+<div class="container mt-4">
+	<div class="row">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<div>
+				<h2 class="mb-1">Transaction Details</h2>
+				<p class="text-muted">Manage and view all departments in the organization</p>
+			</div>
+			<div class="">
+				<a class="btn btn-outline-secondary" href="{% url 'transaction_list' %}" id="tableViewBtn"><i class="fas fa-table me-1"></i>Back to List</a>
+			</div>
+		</div>
+
+		<div class="col-6">
+			<!-- Transaction Info -->
+			<div class="card shadow-sm mb-4">
+				<div class="card-body">
+					<h5 class="card-title fw-bold text-primary">Borrower's Reciept</h5>
+
+					<hr />
+					<div class="row g-3">
+						<div class="col-md-12">
+							<p><strong>Transaction ID:</strong> {{ transaction.user_name }} ({{ transaction.user_id }})</p>
+
+							<p><strong>User:</strong> {{ transaction.user_name }} ({{ transaction.user_id }})</p>
+							<p><strong>Mobile No.:</strong> {{ transaction.user_email|default:"—" }}</p>
+							<p><strong>Check-Out Date:</strong> {{ transaction.user_email|default:"—" }}</p>
+							<p><strong>Return Date:</strong> {{ transaction.user_email|default:"—" }}</p>
+
+							<p>
+								<strong>Status:</strong>
+								<span class="badge {% if transaction.status == 'returned' %}bg-success {% elif transaction.status == 'checked_out' %}bg-primary {% elif transaction.status == 'reserved' %}bg-warning text-dark {% elif transaction.status == 'overdue' %}bg-danger {% else %}bg-secondary{% endif %}"> Checked Out</span>
+							</p>
+						</div>
+					</div>
+					<hr />
+					<p><strong>Notes:</strong> {{ transaction.notes|default:"—" }}</p>
+					<div class="flex justify-content-between align-items-center mt-3">
+						<button class="btn btn-outline-secondary">Print</button>
+					</div>
 				</div>
 			</div>
-			<hr />
-			<p><strong>Notes:</strong> {{ transaction.notes|default:"—" }}</p>
+		</div>
+		<div class="col-6">
+			<!-- Transaction Info -->
+			<div class="card shadow-sm mb-4">
+				<div class="card-body">
+					<h5 class="card-title fw-bold text-primary">Payment Request</h5>
+					<hr />
+
+					<div class="row g-3">
+						<div class="col-md-12">
+							<p><strong>Transaction ID:</strong> {{ transaction.user_name }} ({{ transaction.user_id }})</p>
+							<p><strong>Borrowers Name:</strong> {{ transaction.user_email|default:": " }}</p>
+							<p><strong>OR Num :</strong> {{ transaction.user_email|default:": " }}</p>
+							<p><strong>OR Date:</strong> {{ transaction.user_email|default:": " }}</p>
+							<p><strong>Amount:</strong> {{ transaction.user_email|default:": " }}</p>
+
+							<p>
+								<strong>Status:</strong>
+								<span class="badge {% if transaction.status == 'returned' %}bg-success {% elif transaction.status == 'checked_out' %}bg-primary {% elif transaction.status == 'reserved' %}bg-danger text-dark {% elif transaction.status == 'overdue' %}bg-danger {% else %}bg-secondary{% endif %}">Unpaid </span>
+							</p>
+						</div>
+					</div>
+					<hr />
+					<p><strong>Notes:</strong> {{ transaction.notes|default:"—" }}</p>
+					<div class="flex justify-content-between align-items-center mt-3">
+						<button class="btn btn-outline-secondary">Print</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 
 	<!-- Books Table -->
 	<div class="card shadow-sm">
 		<div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-			<h5 class="mb-0">📚 Books in this Transaction ({{ transaction.transactionitem_set.count }})</h5>
+			<h5 class="mb-0">[{{ transaction.transactionitem_set.count }}] Books in this Transaction </h5>
 		</div>
 		<div class="card-body p-0">
 			<table class="table table-hover align-middle mb-0">
@@ -64,9 +101,9 @@
 							<a href="{% url 'transaction_item_checkout' item.pk %}" class="btn btn-sm btn-danger"> <i class="fas fa-check"></i> Check Out </a>
 							{% elif item.status == "checked_out" %}
 							<a href="{% url 'transaction_item_return' item.pk %}" class="btn btn-sm btn-success"> <i class="fas fa-undo"></i> Return </a>
-              {% else %}
-              <button class="btn btn-secondary">None</button>
-              {% endif %}
+							{% else %}
+							<button class="btn btn-secondary">None</button>
+							{% endif %}
 						</td>
 					</tr>
 					{% empty %}
