@@ -26,7 +26,9 @@ urlpatterns = [
     
     # Department routes
     path('departments/', views.get_departments, name='get_departments'),
-    
+    path('departments/add/', views.add_department, name='add_department'),
+    path('departments/<int:pk>/update/', views.update_department, name='update_department'),    
+    path('departments/<int:pk>/delete/', views.delete_department, name='delete_department'),
     
     # Program routes
     path('programs/', views.get_programs, name='get_programs'),
@@ -54,7 +56,12 @@ urlpatterns = [
     path('transactions/<int:pk>/', views.transaction_detail, name='transaction_detail'),
     path('transactions/<int:pk>/checkout/', views.transaction_checkout, name='transaction_checkout'),
     path('transactions/<int:pk>/return/', views.transaction_return, name='transaction_return'),
-]
 
+
+    # Program routes
+    path('attendance/in', views.attendance_in, name='attendance_in'),
+    path('attendance/out', views.attendance_out, name='attendance_out'),
+
+]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

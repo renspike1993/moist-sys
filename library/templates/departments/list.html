@@ -180,7 +180,7 @@
 			<p class="text-muted">Manage and view all departments in the organization</p>
 		</div>
 		<div class="">
-			<button class="btn-view" id="tableViewBtn"><i class="fas fa-table me-1"></i>✏️ Add Department</button>
+			<a class="btn-view" id="tableViewBtn" href="{% url 'add_department' %}"><i class="fas fa-table me-1"></i>✏️ Add Department</a>
 		</div>
 	</div>
 
@@ -191,14 +191,14 @@
 				<thead class="table-light">
 					<tr>
 						<th>#</th>
-						<th >Description</th>
+						<th>Description</th>
 						<th class="text-center">Population</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for dept in departments %}
-					<tr >
+					<tr>
 						<td>{{ dept.id }}</td>
 						<td>
 							<div class="d-flex align-items-center">
@@ -208,15 +208,13 @@
 								</div>
 							</div>
 						</td>
-						<td class="text-center">
-                            0
-                        </td>
-						
+						<td class="text-center">0</td>
+
 						<td>
-                            <a href="" class="btn btn-sm btn-outline-dark">
-                                View
-                            </a>
-                        </td>
+							<a href="{% url 'update_department' dept.pk %}" class="btn btn-sm btn-outline-dark"> View </a>
+
+							<a href="{% url 'delete_department' dept.pk %}" class="btn btn-danger btn-sm"> Delete </a>
+						</td>
 					</tr>
 					{% empty %}
 					<tr>

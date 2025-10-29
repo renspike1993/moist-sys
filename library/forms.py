@@ -1,8 +1,25 @@
 from django import forms
 from .models import Marc21Field,BookDetail
 from django.forms import modelformset_factory
-from .models import Book
+from .models import Book,Department
 from django.utils.safestring import mark_safe
+
+
+
+class DepartmentForm(forms.ModelForm):
+    class Meta:
+        model = Department
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter department name',
+            }),
+        }
+        labels = {
+            'name': 'Department Name',
+        }
+
 
 class BookForm(forms.ModelForm):
     class Meta:

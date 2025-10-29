@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RFID Scanner Dashboard</title>
+<style>
+  :root {
+    --primary-color: #062548;
+    --secondary-color: #093061;
+    --background-color: #f0f2f5;
+    --card-color: #ffffff;
+    --text-color: #1c1e21;
+    --text-secondary: #65676b;
+    --border-color: #dddfe2;
+    --shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--background-color);
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    line-height: 1.4;
+  }
+
+  header {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-content {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .stats {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    opacity: 0.9;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+
+  .scan-card {
+    background: var(--card-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .scan-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+  }
+
+  .card-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 12px;
+  }
+
+  .card-info {
+    flex: 1;
+  }
+
+  .card-title {
+    font-weight: 600;
+    margin: 0 0 4px 0;
+  }
+
+  .card-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  .card-body {
+    padding: 1rem 1.5rem;
+  }
+
+  .scan-content {
+    font-size: 1rem;
+    margin: 0 0 1rem 0;
+    word-break: break-word;
+  }
+
+  .scan-meta {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+
+  .scan-actions {
+    display: flex;
+    padding: 0.5rem 1.5rem;
+    border-top: 1px solid var(--border-color);
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  .action-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s;
+  }
+
+  .action-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-secondary);
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  .empty-text {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-subtext {
+    font-size: 0.9rem;
+  }
+
+  .scanner-status {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--card-color);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+  }
+
+  .status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #50C878;
+  }
+
+  .status-indicator.scanning {
+    background: #FFA500;
+    animation: pulse 1s infinite;
+  }
+
+  /* Invisible scanner input */
+  #scannerInput {
+    opacity: 0;
+    position: absolute;
+    left: -1000px;
+    top: -1000px;
+  }
+
+  /* Animation for new items */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+
+  .fade-in {
+    animation: fadeInUp 0.3s ease-out;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-content">
+    <h1>Attendance [OUT]</h1>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value" id="totalScans">0</div>
+        <div class="stat-label">Total Scans</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="todayScans">0</div>
+        <div class="stat-label">Today</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div id="scanList">
+    <div class="empty-state">
+      <div class="empty-icon">📦</div>
+      <div class="empty-text">No scans yet</div>
+      <div class="empty-subtext">Start scanning RFID tags to see them here</div>
+    </div>
+  </div>
+</div>
+
+<div class="scanner-status">
+  <div class="status-indicator" id="statusIndicator"></div>
+  <span id="statusText">Ready to scan</span>
+</div>
+
+<!-- Invisible input always focused -->
+<input type="text" id="scannerInput" placeholder="Scan your RFID..." autofocus />
+
+<script>
+const input = document.getElementById('scannerInput');
+const scanList = document.getElementById('scanList');
+const totalScansElement = document.getElementById('totalScans');
+const todayScansElement = document.getElementById('todayScans');
+const statusIndicator = document.getElementById('statusIndicator');
+const statusText = document.getElementById('statusText');
+
+let totalScans = 0;
+let todayScans = 0;
+let scanHistory = [];
+let scanTimeout = null;
+let currentScan = '';
+
+// Scanner configuration
+const SCANNER_DELAY = 100; // Time in ms to wait after last character before processing
+const MIN_SCAN_LENGTH = 3; // Minimum characters to consider a valid scan
+
+// Keep input always focused even if blurred
+input.addEventListener('blur', () => {
+  setTimeout(() => input.focus(), 10);
+});
+
+// Handle all input from scanner
+input.addEventListener('input', (e) => {
+  // Update current scan with the input value
+  currentScan = input.value;
+  
+  // Update status to show scanning
+  updateScannerStatus('scanning', 'Scanning...');
+  
+  // Clear any existing timeout
+  if (scanTimeout) {
+    clearTimeout(scanTimeout);
+  }
+  
+  // Set a new timeout to process the scan after the scanner stops
+  scanTimeout = setTimeout(() => {
+    processScan(currentScan);
+    input.value = '';
+    currentScan = '';
+  }, SCANNER_DELAY);
+});
+
+// Also handle Enter key as a fallback
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && input.value.trim() !== '') {
+    // Clear the timeout since we're processing manually
+    if (scanTimeout) {
+      clearTimeout(scanTimeout);
+    }
+    processScan(input.value.trim());
+    input.value = '';
+    currentScan = '';
+  }
+});
+
+// Process a new scan
+function processScan(value) {
+  // Validate scan length
+  if (value.length < MIN_SCAN_LENGTH) {
+    updateScannerStatus('error', 'Invalid scan (too short)');
+    setTimeout(() => updateScannerStatus('ready', 'Ready to scan'), 1500);
+    return;
+  }
+  
+  const now = new Date();
+  const scanTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const scanDate = now.toLocaleDateString();
+  
+  // Check if this is the first scan today
+  const today = new Date().toLocaleDateString();
+  const lastScanDate = scanHistory.length > 0 ? 
+    new Date(scanHistory[0].timestamp).toLocaleDateString() : null;
+  
+  if (lastScanDate !== today) {
+    todayScans = 0;
+  }
+  
+  // Create scan object
+  const scan = {
+    id: Date.now(),
+    value: value,
+    timestamp: now,
+    time: scanTime,
+    date: scanDate
+  };
+  
+  // Update counters
+  totalScans++;
+  todayScans++;
+  
+  // Update UI
+  updateStats();
+  addScanItem(scan);
+  
+  // Add to history
+  scanHistory.unshift(scan);
+  
+  // Update scanner status
+  updateScannerStatus('success', 'Scan successful!');
+  setTimeout(() => updateScannerStatus('ready', 'Ready to scan'), 1500);
+  
+  // Remove empty state if it exists
+  const emptyState = document.querySelector('.empty-state');
+  if (emptyState) {
+    emptyState.remove();
+  }
+}
+
+// Update scanner status display
+function updateScannerStatus(status, text) {
+  statusIndicator.className = 'status-indicator';
+  statusText.textContent = text;
+  
+  switch(status) {
+    case 'ready':
+      statusIndicator.style.background = '#50C878'; // Green
+      break;
+    case 'scanning':
+      statusIndicator.classList.add('scanning');
+      statusIndicator.style.background = '#FFA500'; // Orange
+      break;
+    case 'success':
+      statusIndicator.style.background = '#50C878'; // Green
+      break;
+    case 'error':
+      statusIndicator.style.background = '#FF6B6B'; // Red
+      break;
+  }
+}
+
+// Update statistics display
+function updateStats() {
+  totalScansElement.textContent = totalScans;
+  todayScansElement.textContent = todayScans;
+}
+
+// Add scanned item to the list
+function addScanItem(scan) {
+  const card = document.createElement('div');
+  card.classList.add('scan-card', 'fade-in');
+  
+  // Generate a consistent color based on the RFID value
+  const colorIndex = hashCode(scan.value) % 5;
+  const colors = ['#4A90E2', '#50C878', '#FF6B6B', '#FFA500', '#9B59B6'];
+  const color = colors[colorIndex];
+  
+  card.innerHTML = `
+    <div class="card-header">
+      <div class="card-avatar" style="background: ${color}">
+        ${scan.value.substring(0, 2).toUpperCase()}
+      </div>
+      <div class="card-info">
+        <div class="card-title">RFID Scan</div>
+        <div class="card-subtitle">${scan.date} at ${scan.time}</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="scan-content">Scanned RFID: <strong>${scan.value}</strong></p>
+      <div class="scan-meta">
+        <span>ID: ${scan.id}</span>
+        <span>${getTimeAgo(scan.timestamp)}</span>
+      </div>
+    </div>
+    <div class="scan-actions">
+      <button class="action-btn">
+        <span>✓</span> Validate
+      </button>
+      <button class="action-btn">
+        <span>ℹ️</span> Details
+      </button>
+      <button class="action-btn">
+        <span>🗑️</span> Delete
+      </button>
+    </div>
+  `;
+  
+  // Add to top of list
+  scanList.prepend(card);
+  
+  // Add event listeners for buttons
+  const deleteBtn = card.querySelector('.scan-actions button:last-child');
+  deleteBtn.addEventListener('click', () => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateX(-100px)';
+    setTimeout(() => {
+      card.remove();
+      totalScans--;
+      updateStats();
+      
+      // Show empty state if no scans left
+      if (scanList.children.length === 0) {
+        showEmptyState();
+      }
+    }, 300);
+  });
+}
+
+// Show empty state when no scans
+function showEmptyState() {
+  const emptyState = document.createElement('div');
+  emptyState.classList.add('empty-state');
+  emptyState.innerHTML = `
+    <div class="empty-icon">📦</div>
+    <div class="empty-text">No scans yet</div>
+    <div class="empty-subtext">Start scanning RFID tags to see them here</div>
+  `;
+  scanList.appendChild(emptyState);
+}
+
+// Helper function to generate hash code
+function hashCode(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0; // Convert to 32bit integer
+  }
+  return Math.abs(hash);
+}
+
+// Helper function to get time ago string
+function getTimeAgo(timestamp) {
+  const now = new Date();
+  const diffMs = now - timestamp;
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  
+  if (diffMins < 1) return 'Just now';
+  if (diffMins < 60) return `${diffMins} minute${diffMins === 1 ? '' : 's'} ago`;
+  if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? '' : 's'} ago`;
+  
+  return timestamp.toLocaleDateString();
+}
+
+// Ensure input is always focused on page load
+window.addEventListener('load', () => input.focus());
+
+// Add some sample data for demonstration
+window.addEventListener('load', () => {
+  // Uncomment the line below to add sample data for demonstration
+  addSampleData();
+});
+
+function addSampleData() {
+  const sampleScans = [
+    'RFID-001-ABC123',
+    'RFID-002-XYZ789',
+    'RFID-003-DEF456',
+    'RFID-004-GHI789',
+    'RFID-005-JKL012'
+  ];
+  
+  // Add sample scans with slight delay for visual effect
+  sampleScans.forEach((scan, index) => {
+    setTimeout(() => {
+      processScan(scan);
+    }, index * 300);
+  });
+}
+</script>
+
+</body>
+</html>

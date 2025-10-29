@@ -5,12 +5,20 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .forms import  BookForm
 import random
-from .forms import BookDetailFormSet, BookDetailEditForm
+from .forms import BookDetailFormSet, BookDetailEditForm,DepartmentForm
 from django.db.models import Count
 import json
 from django.core.paginator import Paginator
-
 from.utils.printer import print_transaction
+
+
+
+
+import eventlet
+import socketio
+import os
+from django.core.wsgi import get_wsgi_application
+
 
 def reservation_api(request):
     """
@@ -310,14 +318,6 @@ def delete_marc21_field(request, pk):
 
 
 
-def get_departments(request):
-    departments = Department.objects.all()
-    return render(request, 'department/list.html', {
-        'departments': departments
-    })
-    
-
-
 
 def get_programs(request):
     programs = Program.objects.all()
@@ -507,3 +507,61 @@ def transaction_return(request, pk):
     transaction.mark_as_returned()
     messages.success(request, f'Transaction {transaction.transaction_id} marked as returned.')
     return redirect('transaction_detail', pk=transaction.pk)
+
+
+def add_department(request):
+    if request.method == 'POST':
+        form = DepartmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('get_departments')
+    else:
+        form = DepartmentForm()
+    return render(request, 'departments/add_department.html', {'form': form})
+
+
+def get_departments(request):
+    departments = Department.objects.all()
+    return render(request, 'departments/list.html', {
+        'departments': departments
+    })
+    
+def delete_department(request, pk):
+    """Delete a department by its primary key."""
+    department = get_object_or_404(Department, pk=pk)
+
+    if request.method == "POST":  # confirm delete
+        department.delete()
+        messages.success(request, f"Department '{department.name}' deleted successfully.")
+        return redirect('get_departments')  # change to where you list departments
+
+    return render(request, 'departments/delete_department.html', {'department': department})
+
+def update_department(request, pk):
+    """Update an existing department."""
+    department = get_object_or_404(Department, pk=pk)
+
+    if request.method == "POST":
+        form = DepartmentForm(request.POST, instance=department)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Department '{department.name}' updated successfully.")
+            return redirect('get_departments')  # or wherever your list page is
+    else:
+        form = DepartmentForm(instance=department)
+
+    return render(request, 'departments/update_department.html', {
+        'form': form,
+        'department': department
+    })
+
+
+def attendance_in(request):
+    return render(request, 'attendance_in.html')
+
+def attendance_out(request):
+    return render(request, 'attendance_out.html')
+
+
+def rfid(request):
+    return render(request, 'attendance_out.html')

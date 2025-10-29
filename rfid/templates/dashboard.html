@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Django Socket.IO Dashboard</title>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f0f2f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    #log {
+      margin-top: 20px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      width: 300px;
+      min-height: 200px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <h2>📡 Django RFID Dashboard</h2>
+  <div id="log">Waiting for trigger...</div>
+
+  <script>
+    const socket = io(window.location.origin);
+
+    socket.on('connect', () => {
+      console.log('Socket connected!');
+    });
+
+    socket.on('rfid_trigger', (data) => {
+    alert(1);
+
+        //   const log = document.getElementById('log');
+    //   const p = document.createElement('p');
+    //   p.textContent = `🔔 ${data.message}`;
+    //   log.prepend(p);
+    });
+  </script>
+</body>
+</html>
