@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('library.urls')),
     path('rfid/', include('rfid.urls')),
+    path('registrar/', include('registrar.urls')),
 
 ]
