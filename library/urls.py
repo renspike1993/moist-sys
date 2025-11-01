@@ -57,7 +57,6 @@ urlpatterns = [
 
 
 
-    path('registrar/data-center', views_registrar.data_center, name='data_center'),
 
 ]
 

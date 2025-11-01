@@ -26,3 +26,11 @@ class Student(models.Model):
 
     def __str__(self):
         return f"{self.last_name}, {self.first_name}"
+
+
+class Folder(models.Model):
+    folder_name = models.CharField(max_length=100)
+    max_size = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.folder_name}, {self.max_size}"

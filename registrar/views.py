@@ -11,3 +11,8 @@ def registrar_dashboard(request):
 # Example: list of students
 def registrar_students(request):
     return render(request, 'registrar/students.html')
+
+
+# Example: list of students
+def registrar_couurses(request):
+    return render(request, 'courses/list.html')
