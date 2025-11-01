@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'library',
+    'registrar',
 ]
 
 MIDDLEWARE = [
@@ -77,11 +78,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'library',      # <-- Replace with your database name
-        'USER': 'postgres',      # <-- Replace with your DB username
-        'PASSWORD': 'renspike',  # <-- Replace with your DB password
-        'HOST': 'localhost',         # <-- or your DB host
-        'PORT': '5432',              # default PostgreSQL port
+        'NAME': 'library',      # main DB
+        'USER': 'postgres',
+        'PASSWORD': 'moistsystem',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    },
+    'registrar': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'registrar',    # second DB
+        'USER': 'postgres',
+        'PASSWORD': 'moistsystem',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -117,12 +126,18 @@ USE_I18N = True
 USE_TZ = True
 
 
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-
+STATICFILES_DIRS = [
+    BASE_DIR / '' / 'static',
+    BASE_DIR / 'registrar' / 'static',
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -130,3 +145,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DATABASE_ROUTERS = ['registrar.router.RegistrarRouter']

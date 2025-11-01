@@ -197,3 +197,5 @@ class TransactionItem(models.Model):
     
     class Meta:
         unique_together = ['transaction', 'book']
+
+

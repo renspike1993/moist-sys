@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views,views_registrar
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -54,6 +54,11 @@ urlpatterns = [
     path('transactions/<int:pk>/', views.transaction_detail, name='transaction_detail'),
     path('transactions/<int:pk>/checkout/', views.transaction_checkout, name='transaction_checkout'),
     path('transactions/<int:pk>/return/', views.transaction_return, name='transaction_return'),
+
+
+
+    path('registrar/data-center', views_registrar.data_center, name='data_center'),
+
 ]
 
 if settings.DEBUG:
